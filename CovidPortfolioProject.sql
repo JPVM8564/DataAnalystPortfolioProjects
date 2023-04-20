@@ -1,3 +1,5 @@
+--Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating View, Converting Data Types
+
 select location, fecha, total_cases, new_cases, total_deaths, population
 from coviddeaths
 where continent is not NULL
@@ -68,6 +70,7 @@ order by 1,2
 
 
 -- Looking at Total Population vs Vaccinations
+-- Shows percentage of population that has received at least one covid vaccine
 
 select dea.continent, dea.location, dea.fecha, dea.population, vac.new_vaccinations,
 SUM(vac.new_vaccinations) OVER (partition by dea.location order by dea.location, 
@@ -81,7 +84,7 @@ where dea.continent is not NULL
 order by 2,3 
 
 
--- Use CTE
+-- Using CTE to perform Calculation on partition by in previous query
 
 With PopvsVac (continent, location, fecha, population, new_vaccinations, Rolling_vaccinations)
 as
@@ -102,7 +105,7 @@ from PopvsVac
  
 
 
--- TEMP TABLE
+-- Using Temp Table to perform Calculation on Partition by in previous query
 
 create global temporary table PercentPopulationVaccinated
 (
